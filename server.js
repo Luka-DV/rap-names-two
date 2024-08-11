@@ -1,6 +1,13 @@
-const express = require('express')
-const app = express()
-const PORT = 8000
+import express from "express";
+import cors from "cors";
+import url from "url";
+import path from "path";
+
+const app = express();
+const PORT = 8000;
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename); 
 
 const rappers = {
     '21 savage':{
@@ -20,8 +27,11 @@ const rappers = {
     }
 }
 
+app.use(cors());
+
 app.get('/', (request, response)=>{
-    response.sendFile(__dirname + '/index.html')
+    // response.sendFile(__dirname + '/index.html')
+    response.sendFile(path.join(__dirname, "index.html"));
 })
 
 app.get('/api/:rapperName', (request,response)=>{
@@ -33,6 +43,6 @@ app.get('/api/:rapperName', (request,response)=>{
     }
 })
 
-app.listen(PORT, ()=>{
+app.listen(process.env.PORT || PORT, ()=>{
     console.log(`The server is running on port ${PORT}! You better go catch it!`)
 })
